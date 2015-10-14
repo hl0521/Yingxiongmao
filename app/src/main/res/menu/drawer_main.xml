@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/signin"
+            android:title="登陆"
+            android:icon="@drawable/ico_user"></item>
+
+        <item
+            android:id="@+id/homepage"
+            android:title="首页"
+            android:icon="@drawable/ico_home"></item>
+
+        <item
+            android:id="@+id/favourite"
+            android:title="收藏"
+            android:icon="@drawable/ico_like"></item>
+
+        <item
+            android:id="@+id/setting"
+            android:title="设置"
+            android:icon="@drawable/ico_settings"></item>
+
+        <item
+            android:id="@+id/back"
+            android:title="退出"
+            android:icon="@drawable/ico_delete"></item>
+
+    </group>
+
+</menu>
