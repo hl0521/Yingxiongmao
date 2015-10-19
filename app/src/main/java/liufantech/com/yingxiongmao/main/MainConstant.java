@@ -12,4 +12,9 @@ public class MainConstant {
     public static final String CATEGORY_TENNIS = "liufantech.com.yingxiongmao.category.TENNIS";
     public static final String CATEGORY_BEAUTY = "liufantech.com.yingxiongmao.category.BEAUTY";
 
+    // LeanCloud key
+    public static final String APP_ID = "pXmrJspKpp2yR9aorJ0m3aGu";
+    public static final String APP_KEY = "HA0RQAycHfs4ByiYXBVghsJS";
+    public static final String MASTER_KEY = "jKKfMOVSp899K2J5JythdGTG";
+
 }
