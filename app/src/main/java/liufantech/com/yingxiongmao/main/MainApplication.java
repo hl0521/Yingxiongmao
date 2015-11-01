@@ -47,15 +47,15 @@ public class MainApplication extends Application {
         yingxiongmao.put("Fitness", "fitness");
         yingxiongmao.put("Tennis", "tennis");
         yingxiongmao.put("Beauty", "beauty");
-        yingxiongmao.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
-                    System.out.println("Yingxiongmao: Successfully");
-                } else {
-                    System.out.println("Yingxiongmao: Failed");
-                }
-            }
-        });
+//        yingxiongmao.saveInBackground(new SaveCallback() {
+//            @Override
+//            public void done(AVException e) {
+//                if (e == null) {
+//                    System.out.println("Yingxiongmao: Successfully");
+//                } else {
+//                    System.out.println("Yingxiongmao: Failed");
+//                }
+//            }
+//        });
     }
 }

@@ -3,23 +3,17 @@ package liufantech.com.yingxiongmao.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.logging.Handler;
 
 import liufantech.com.yingxiongmao.R;
 
 
-public class MainFragment extends android.support.v4.app.Fragment {
+public class ContentFragment extends android.support.v4.app.Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String CATEGORY = "category";
 
@@ -35,7 +29,7 @@ public class MainFragment extends android.support.v4.app.Fragment {
     private android.os.Handler mHandler;
     private Context mContext;
 
-    private MainFragment.OnFloatingActionButtonClicked mOnFloatingActionButtonListener;
+    private ContentFragment.OnFloatingActionButtonClicked mOnFloatingActionButtonListener;
 
 
     /**
@@ -43,18 +37,18 @@ public class MainFragment extends android.support.v4.app.Fragment {
      * this fragment using the provided parameters.
      *
      * @param category Parameter 1.
-     * @return A new instance of fragment MainFragment.
+     * @return A new instance of fragment ContentFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MainFragment newInstance(String category) {
-        MainFragment fragment = new MainFragment();
+    public static ContentFragment newInstance(String category) {
+        ContentFragment fragment = new ContentFragment();
         Bundle args = new Bundle();
         args.putString(CATEGORY, category);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public MainFragment() {
+    public ContentFragment() {
         // Required empty public constructor
     }
 
@@ -89,21 +83,27 @@ public class MainFragment extends android.support.v4.app.Fragment {
         switch (mCategory) {
             case MainConstant.CATEGORY_HOMEPAGE:
                 view = inflater.inflate(R.layout.fragment_homepage, container, false);
+                System.out.println("=========================================ContentFragment onCreateView 0");
                 break;
             case MainConstant.CATEGORY_NBA:
                 view = inflater.inflate(R.layout.fragment_nba, container, false);
+                System.out.println("=========================================ContentFragment onCreateView 1");
                 break;
             case MainConstant.CATEGORY_FOOTBALL:
                 view = inflater.inflate(R.layout.fragment_football, container, false);
+                System.out.println("=========================================ContentFragment onCreateView 2");
                 break;
             case MainConstant.CATEGORY_FITNESS:
                 view = inflater.inflate(R.layout.fragment_fitness, container, false);
+                System.out.println("=========================================ContentFragment onCreateView 3");
                 break;
             case MainConstant.CATEGORY_TENNIS:
                 view = inflater.inflate(R.layout.fragment_tennis, container, false);
+                System.out.println("=========================================ContentFragment onCreateView 4");
                 break;
             case MainConstant.CATEGORY_BEAUTY:
                 view = inflater.inflate(R.layout.fragment_beauty, container, false);
+                System.out.println("=========================================ContentFragment onCreateView 5");
                 break;
             default:
                 view = null;
@@ -148,11 +148,53 @@ public class MainFragment extends android.support.v4.app.Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        switch (mCategory) {
+            case MainConstant.CATEGORY_HOMEPAGE:
+                System.out.println("=========================================ContentFragment onPause 0");
+                break;
+            case MainConstant.CATEGORY_NBA:
+                System.out.println("=========================================ContentFragment onPause 1");
+                break;
+            case MainConstant.CATEGORY_FOOTBALL:
+                System.out.println("=========================================ContentFragment onPause 2");
+                break;
+            case MainConstant.CATEGORY_FITNESS:
+                System.out.println("=========================================ContentFragment onPause 3");
+                break;
+            case MainConstant.CATEGORY_TENNIS:
+                System.out.println("=========================================ContentFragment onPause 4");
+                break;
+            case MainConstant.CATEGORY_BEAUTY:
+                System.out.println("=========================================ContentFragment onPause 5");
+                break;
+            default:
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        switch (mCategory) {
+            case MainConstant.CATEGORY_HOMEPAGE:
+                System.out.println("=========================================ContentFragment onDestroy 0");
+                break;
+            case MainConstant.CATEGORY_NBA:
+                System.out.println("=========================================ContentFragment onDestroy 1");
+                break;
+            case MainConstant.CATEGORY_FOOTBALL:
+                System.out.println("=========================================ContentFragment onDestroy 2");
+                break;
+            case MainConstant.CATEGORY_FITNESS:
+                System.out.println("=========================================ContentFragment onDestroy 3");
+                break;
+            case MainConstant.CATEGORY_TENNIS:
+                System.out.println("=========================================ContentFragment onDestroy 4");
+                break;
+            case MainConstant.CATEGORY_BEAUTY:
+                System.out.println("=========================================ContentFragment onDestroy 5");
+                break;
+            default:
+        }
     }
 
     public RecyclerView.LayoutManager getmRecyclerViewLayoutManager() {
