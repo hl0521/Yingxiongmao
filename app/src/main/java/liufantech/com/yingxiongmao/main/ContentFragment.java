@@ -11,9 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import liufantech.com.yingxiongmao.R;
+import liufantech.com.yingxiongmao.custom.abstraction.BaseFragment;
 
 
-public class ContentFragment extends android.support.v4.app.Fragment {
+public class ContentFragment extends BaseFragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String CATEGORY = "category";
 
@@ -199,6 +200,11 @@ public class ContentFragment extends android.support.v4.app.Fragment {
 
     public RecyclerView.LayoutManager getmRecyclerViewLayoutManager() {
         return mRecyclerViewLayoutManager;
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 
     public interface OnFloatingActionButtonClicked {

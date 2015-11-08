@@ -12,13 +12,24 @@ import android.view.ViewGroup;
  * Created by HL0521 on 2015/10/31.
  */
 public class RegisterFragment extends Fragment {
+    private Context mContext;
+
     public RegisterFragment() {
 
+    }
+
+    public static RegisterFragment newInstance() {
+        RegisterFragment fragment = new RegisterFragment();
+        Bundle args = new Bundle();
+//        args.putString();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext = context;
     }
 
     @Override

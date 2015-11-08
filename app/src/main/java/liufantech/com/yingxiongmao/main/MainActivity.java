@@ -1,5 +1,6 @@
 package liufantech.com.yingxiongmao.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -12,20 +13,27 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import liufantech.com.yingxiongmao.R;
+import liufantech.com.yingxiongmao.custom.abstraction.BaseFragment;
 
 public class MainActivity extends AppCompatActivity implements ContentFragment.OnFloatingActionButtonClicked {
 
     private RootFragment fragmentRoot;
     private Handler mHandler;
+
+    private BaseFragment mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +41,13 @@ public class MainActivity extends AppCompatActivity implements ContentFragment.O
         setContentView(R.layout.activity_main);
         fragmentRoot = RootFragment.newInstance();
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.main_frame, fragmentRoot).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragmentRoot).commit();
         }
 
         System.out.println("=========================================MainActivity onCreate");
 
         mHandler = new Handler();
+
     }
 
     @Override
@@ -67,7 +76,11 @@ public class MainActivity extends AppCompatActivity implements ContentFragment.O
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (fragmentRoot.getDrawerLayout().isDrawerOpen(Gravity.LEFT)) {
+            fragmentRoot.getDrawerLayout().closeDrawers();
+        } else {
+            super.onBackPressed();
+        }
     }
 
 //    @Override
@@ -84,6 +97,50 @@ public class MainActivity extends AppCompatActivity implements ContentFragment.O
 //        }
 //        return super.onKeyDown(keyCode, event);
 //    }
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View view = getCurrentFocus();
+
+            if (isShouldHideInput(view, event)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        // 下面这段代码照着网上抄的，如果有问题再进行相应的修改
+//        if (getWindow().superDispatchTouchEvent(event)) {
+//            return true;
+//        }
+//        return onTouchEvent(event);
+    }
+
+    public boolean isShouldHideInput(View view, MotionEvent event) {
+        if ((view != null) && (view instanceof EditText)) {
+            int[] leftTop = {0, 0};
+
+            //获取输入框当前的location位置
+            view.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + view.getHeight();
+            int right = left + view.getWidth();
+            if ((event.getX() > left) && (event.getX() < right)
+                    && (event.getY() > top) && (event.getY() < bottom)) {
+                // 点击的是输入框区域，保留点击EditText的事件
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     protected void onStart() {

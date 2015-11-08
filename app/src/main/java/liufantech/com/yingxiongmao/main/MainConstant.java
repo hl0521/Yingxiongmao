@@ -5,12 +5,16 @@ package liufantech.com.yingxiongmao.main;
  */
 public class MainConstant {
 
+    // Fragment in ViewPager
     public static final String CATEGORY_HOMEPAGE = "liufantech.com.yingxiongmao.category.HOMEPAGE";
     public static final String CATEGORY_NBA = "liufantech.com.yingxiongmao.category.NBA";
     public static final String CATEGORY_FOOTBALL = "liufantech.com.yingxiongmao.category.FOOTBALL";
     public static final String CATEGORY_FITNESS = "liufantech.com.yingxiongmao.category.FUTNESS";
     public static final String CATEGORY_TENNIS = "liufantech.com.yingxiongmao.category.TENNIS";
     public static final String CATEGORY_BEAUTY = "liufantech.com.yingxiongmao.category.BEAUTY";
+
+    // Login Fragment
+    public static final String FRAGMENT_LOGIN = "liufantech.com.yingxiongmao.fragment.LOGIN";
 
     // LeanCloud key
     public static final String APP_ID = "pXmrJspKpp2yR9aorJ0m3aGu";

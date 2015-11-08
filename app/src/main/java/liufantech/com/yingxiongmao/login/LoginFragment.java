@@ -62,24 +62,26 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    public void initWidget(View view) {
+    protected void initWidget(View view) {
 
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         // App logo
 //        mToolbar.setLogo(R.mipmap.ic_launcher);
         // Title
-        mToolbar.setTitle(R.string.app_name);
+        mToolbar.setTitle(R.string.drawer_login);
         ((MainActivity) getActivity()).setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.icon_white_previous);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(mContext,"Navigation",Toast.LENGTH_SHORT).show();
-//                getFragmentManager().popBackStack();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.main_frame, ((MainActivity) mContext).getFragmentRoot()).commit();
+                getFragmentManager().popBackStack();
+//                getFragmentManager().beginTransaction()
+//                        .replace(R.id.main_frame, ((MainActivity) mContext).getFragmentRoot()).commit();
             }
         });
+        // hide the menu
+//        setMenuVisibility(false);
 
         mLoginAccount = (ClearEditText) view.findViewById(R.id.loginAccount);
         mLoginPassword = (ClearEditText) view.findViewById(R.id.loginPassword);
@@ -95,14 +97,10 @@ public class LoginFragment extends Fragment {
                     mLoginButton.setBackgroundColor(Color.parseColor("#CCCCCC"));
                 } else {
                     mLoginButton.setClickable(true);
-                    mLoginButton.setBackgroundColor(Color.parseColor("#3F51B5"));
+                    mLoginButton.setBackgroundResource(R.drawable.login_button_selector);
                 }
             }
         };
-
-        mLoginButton.setClickable(false);
-        mLoginProblem.setClickable(true);
-        mLoginMore.setClickable(true);
 
         mLoginAccount.setOnClearEditTextChangedListener(mClearEditTextChangedListener);
         mLoginPassword.setOnClearEditTextChangedListener(mClearEditTextChangedListener);
@@ -127,7 +125,13 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(mContext, "Login Button", Toast.LENGTH_SHORT).show();
             }
         });
+
+        mLoginButton.setClickable(false);
+        mLoginButton.setBackgroundColor(Color.parseColor("#CCCCCC"));
+        mLoginProblem.setClickable(true);
+        mLoginMore.setClickable(true);
     }
+
 
     @Override
     public void onPause() {

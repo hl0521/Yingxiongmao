@@ -11,9 +11,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.util.AttributeSet;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import liufantech.com.yingxiongmao.R;
+import liufantech.com.yingxiongmao.main.MainActivity;
 
 /**
  * Created by HL0521 on 2015/10/31.
@@ -62,6 +64,9 @@ public class ClearEditText extends EditText implements OnFocusChangeListener, Te
         if (event.getAction() == MotionEvent.ACTION_UP) {
             if (getCompoundDrawables()[2] != null) {
 
+                // getWidth():得到控件的宽度
+                // getTotalPaddingRight():clear的图标左边缘至控件右边缘的距离
+                // getPaddingRight():clear的图标右边缘至控件右边缘的距离
                 boolean touchable = event.getX() > (getWidth() - getTotalPaddingRight())
                         && (event.getX() < ((getWidth() - getPaddingRight())));
 

@@ -1,7 +1,16 @@
 package liufantech.com.yingxiongmao.main;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,17 +25,22 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import liufantech.com.yingxiongmao.R;
+import liufantech.com.yingxiongmao.custom.abstraction.BaseFragment;
+import liufantech.com.yingxiongmao.favourite.FavouriteFragment;
 import liufantech.com.yingxiongmao.login.LoginFragment;
+import liufantech.com.yingxiongmao.setting.SettingFragment;
 
 /**
  * Created by HL0521 on 2015/10/31.
  */
-public class RootFragment extends Fragment {
+public class RootFragment extends BaseFragment {
 
     private String[] mCategory;
 
@@ -38,6 +52,8 @@ public class RootFragment extends Fragment {
     private ContentFragment fragmentBeauty;
 
     private LoginFragment mLoginFragment;
+    private SettingFragment mSettingFragment;
+    private FavouriteFragment mFavouriteFragment;
 
     private Toolbar mToolbar;
     private Toolbar.OnMenuItemClickListener onMenuItemClickListener;
@@ -56,6 +72,7 @@ public class RootFragment extends Fragment {
     private FloatingActionButton mFloatingActionButton;
 
     private Context mContext;
+    private Handler mHandler;
 
     public RootFragment() {
         // required empty public constructor
@@ -85,7 +102,7 @@ public class RootFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mLoginFragment = LoginFragment.newInstance();
+        initWidget();
 
         initToolbar(view);
 
@@ -102,6 +119,29 @@ public class RootFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        System.out.println("=========================================RootFragment onActivityCreated");
+    }
+
+    public void initWidget() {
+        if (mLoginFragment == null) {
+            mLoginFragment = LoginFragment.newInstance();
+        }
+
+        if (mSettingFragment == null) {
+            mSettingFragment = SettingFragment.newInstance();
+        }
+
+        if (mFavouriteFragment == null) {
+            mFavouriteFragment = FavouriteFragment.newInstance();
+        }
+        if (mHandler == null) {
+            mHandler = new Handler();
+        }
+    }
+
     public void initToolbar(View view) {
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         // App logo
@@ -114,49 +154,69 @@ public class RootFragment extends Fragment {
         // Navigation Icon 要设定在 setSupoortActionBar 才有作用，否则会出现 back button
         mToolbar.setNavigationIcon(R.drawable.ic_menu);
 
-        onMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_search:
-                        Toast.makeText(mContext, "Search", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        break;
-                }
+        if (onMenuItemClickListener == null) {
+            onMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_search:
+                            Toast.makeText(mContext, "Search", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            break;
+                    }
 
-                return true;
-            }
-        };
+                    return true;
+                }
+            };
+        }
 
         mToolbar.setOnMenuItemClickListener(onMenuItemClickListener);
     }
 
     public void initViewPager(View view) {
-        mArrayList = new ArrayList<>();
+        if (mArrayList == null) {
+            mArrayList = new ArrayList<>();
+        }
 
-        fragmentHomePage = ContentFragment.newInstance(MainConstant.CATEGORY_HOMEPAGE);
-        fragmentNBA = ContentFragment.newInstance(MainConstant.CATEGORY_NBA);
-        fragmentFootball = ContentFragment.newInstance(MainConstant.CATEGORY_FOOTBALL);
-        fragmentFitness = ContentFragment.newInstance(MainConstant.CATEGORY_FITNESS);
-        fragmentTennis = ContentFragment.newInstance(MainConstant.CATEGORY_TENNIS);
-        fragmentBeauty = ContentFragment.newInstance(MainConstant.CATEGORY_BEAUTY);
+        if (fragmentHomePage == null) {
+            fragmentHomePage = ContentFragment.newInstance(MainConstant.CATEGORY_HOMEPAGE);
+            mArrayList.add(fragmentHomePage);
+        }
+        if (fragmentNBA == null) {
+            fragmentNBA = ContentFragment.newInstance(MainConstant.CATEGORY_NBA);
+            mArrayList.add(fragmentNBA);
+        }
+        if (fragmentFootball == null) {
+            fragmentFootball = ContentFragment.newInstance(MainConstant.CATEGORY_FOOTBALL);
+            mArrayList.add(fragmentFootball);
+        }
+        if (fragmentFitness == null) {
+            fragmentFitness = ContentFragment.newInstance(MainConstant.CATEGORY_FITNESS);
+            mArrayList.add(fragmentFitness);
+        }
+        if (fragmentTennis == null) {
+            fragmentTennis = ContentFragment.newInstance(MainConstant.CATEGORY_TENNIS);
+            mArrayList.add(fragmentTennis);
+        }
+        if (fragmentBeauty == null) {
+            fragmentBeauty = ContentFragment.newInstance(MainConstant.CATEGORY_BEAUTY);
+            mArrayList.add(fragmentBeauty);
+        }
 
-        mArrayList.add(fragmentHomePage);
-        mArrayList.add(fragmentNBA);
-        mArrayList.add(fragmentFootball);
-        mArrayList.add(fragmentFitness);
-        mArrayList.add(fragmentTennis);
-        mArrayList.add(fragmentBeauty);
+        System.out.println("===========AAAAAAAAAAA===========" + mArrayList.size());
 
-        mMainViewPagerAdapter = new MainViewPagerAdapter(getActivity().getSupportFragmentManager(), mArrayList, mContext);
+        if (mMainViewPagerAdapter == null) {
+            mMainViewPagerAdapter = new MainViewPagerAdapter(getChildFragmentManager(),
+                    mArrayList, mContext);
+        }
 
         mViewPager = (ViewPager) view.findViewById(R.id.contentViewPager);
         mViewPager.setAdapter(mMainViewPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixel) {
                 mTabLayout.setScrollPosition(position, positionOffset, true);
                 mCurrentFragmentPosition = position;
             }
@@ -176,17 +236,18 @@ public class RootFragment extends Fragment {
     }
 
     public void initTabLayout(View view) {
-        mCategory = getResources().getStringArray(R.array.category);
+        if (mCategory == null) {
+            mCategory = getResources().getStringArray(R.array.category);
+        }
         mTabLayout = (TabLayout) view.findViewById(R.id.tabCategory);
-
         for (int i = 0; i < mCategory.length; i++) {
             mTabLayout.addTab(mTabLayout.newTab().setText(mCategory[i]));
         }
-
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition(), false);
+//                System.out.println("*************点击了TAB"+tab.getPosition());
             }
 
             @Override
@@ -196,16 +257,31 @@ public class RootFragment extends Fragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+//                System.out.println("***************再次点击TAB"+tab.getPosition());
+                mViewPager.setCurrentItem(tab.getPosition(), false);
             }
         });
 
-        mViewPager.setCurrentItem(0);  // default: the first category
+//        mViewPager.setCurrentItem(2,false);  // default: the first category
     }
 
     public void initDrawerLayout() {
         mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.main_drawer);
-        mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close) {
+//        ImageView imageView = (ImageView) getActivity().findViewById(R.id.user_portrait);
+//        TextView textView = (TextView) getActivity().findViewById(R.id.user_name);
+//
+//        Paint paint = new Paint();
+//        paint.setAntiAlias(true);
+//        paint.setColor(Color.parseColor("#FFFFFF"));
+//        paint.setStyle(Paint.Style.STROKE);
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+//        Canvas canvas = new Canvas(bitmap);                                 // bitmap就是我们原来的图,比如头像
+//        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));  //因为我们先画了图所以DST_IN
+//        int radius = bitmap.getWidth();                                     //假设图片是正方形的
+//        canvas.drawCircle(radius, radius, radius, paint);                   //r=radius, 圆心(r,r)
+
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, mToolbar,
+                R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -228,19 +304,41 @@ public class RootFragment extends Fragment {
                 switch (menuItem.getItemId()) {
                     case R.id.signin:
 //                        Toast.makeText(mContext, "signin", Toast.LENGTH_SHORT).show();
-                        getFragmentManager().beginTransaction().addToBackStack(null)
-                                .replace(R.id.main_frame, mLoginFragment).commit();
+                        if (mLoginFragment.isVisible() == false) {
+                            getFragmentManager().beginTransaction().addToBackStack(null)
+                                    .replace(R.id.main_frame, mLoginFragment).commit();
+                        }
                         break;
                     case R.id.homepage:
                         Toast.makeText(mContext, "homepage", Toast.LENGTH_SHORT).show();
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.main_frame, ((MainActivity) mContext).getFragmentRoot()).commit();
+                        while (getFragmentManager().getBackStackEntryCount() > 0) {
+                            getFragmentManager().popBackStackImmediate();
+                        }
+
+                        // 下面的代码就执行时，上面的fragment还没初始化完成，代码没有作用，因此此处加了个延时
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+//                                mTabLayout.setScrollPosition(0, 0, true);
+                                mViewPager.setCurrentItem(0, false);
+                            }
+                        }, 10);
+//                        getFragmentManager().beginTransaction()
+//                                .replace(R.id.main_frame, ((MainActivity) mContext).getFragmentRoot()).commit();
                         break;
                     case R.id.favourite:
-                        Toast.makeText(mContext, "favourite", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(mContext, "favourite", Toast.LENGTH_SHORT).show();
+                        if (mFavouriteFragment.isVisible() == false) {
+                            getFragmentManager().beginTransaction().addToBackStack(null)
+                                    .replace(R.id.main_frame, mFavouriteFragment).commit();
+                        }
                         break;
                     case R.id.setting:
-                        Toast.makeText(mContext, "setting", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(mContext, "setting", Toast.LENGTH_SHORT).show();
+                        if (mSettingFragment.isVisible() == false) {
+                            getFragmentManager().beginTransaction().addToBackStack(null)
+                                    .replace(R.id.main_frame, mSettingFragment).commit();
+                        }
                         break;
                     case R.id.back:
                         menuItem.setChecked(false);
@@ -294,6 +392,10 @@ public class RootFragment extends Fragment {
         return mToolbar;
     }
 
+    public DrawerLayout getDrawerLayout() {
+        return mDrawerLayout;
+    }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -310,6 +412,11 @@ public class RootFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("=========================================RootFragment onDestroy");
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
     }
 }
 

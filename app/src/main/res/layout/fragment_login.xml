@@ -30,12 +30,25 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp">
 
+        <liufantech.com.yingxiongmao.custom.widget.CircleImageView
+            android:id="@+id/user_portrait"
+            android:layout_width="wrap_content"
+            android:layout_height="144dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_launcher"
+            app:border_color="#000000"
+            app:border_width="6dp" />
+
         <liufantech.com.yingxiongmao.custom.widget.ClearEditText
             android:id="@+id/loginAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:drawableLeft="@drawable/ico_user"
+            android:layout_below="@+id/user_portrait"
+            android:layout_marginTop="12dp"
             android:drawablePadding="24dp"
             android:drawableRight="@drawable/ico_delete"
             android:hint="@string/login_account"
@@ -58,17 +71,17 @@
         <Button
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="12dp"
             android:layout_below="@+id/loginPassword"
             android:layout_centerVertical="true"
-            android:text="@string/login_button"
-            android:textSize="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/login_button_selector"
             android:clickable="false"
+            android:text="@string/login_button"
             android:textColor="#FFFFFF"
-            android:background="#CCCCCC"/>
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/loginProblem"

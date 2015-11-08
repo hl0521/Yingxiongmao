@@ -6,10 +6,16 @@
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="drawer_login">登陆</string>
+    <string name="drawer_favourite">收藏</string>
+    <string name="drawer_setting">设置</string>
 
     <string name="login_account">用户名/邮箱/手机号</string>
     <string name="login_password">请输入密码</string>
     <string name="login_button">登陆</string>
     <string name="login_problem">登陆遇到问题？</string>
     <string name="login_more">更多</string>
+
+    <drawable name="click_normal">#3F51B5</drawable>
+    <drawable name="click_pressed">#0000FF</drawable>
 </resources>
