@@ -1,4 +1,4 @@
-package liufantech.com.yingxiongmao.main;
+package liufantech.com.yingxiongmao.content;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;

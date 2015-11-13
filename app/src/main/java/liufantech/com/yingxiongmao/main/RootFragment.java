@@ -1,14 +1,6 @@
 package liufantech.com.yingxiongmao.main;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -20,19 +12,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import liufantech.com.yingxiongmao.R;
-import liufantech.com.yingxiongmao.custom.abstraction.BaseFragment;
+import liufantech.com.yingxiongmao.content.ContentFragment;
+import liufantech.com.yingxiongmao.custom.base.BaseFragment;
 import liufantech.com.yingxiongmao.favourite.FavouriteFragment;
 import liufantech.com.yingxiongmao.login.LoginFragment;
 import liufantech.com.yingxiongmao.setting.SettingFragment;

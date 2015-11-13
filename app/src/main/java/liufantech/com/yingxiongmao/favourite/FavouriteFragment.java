@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import liufantech.com.yingxiongmao.R;
-import liufantech.com.yingxiongmao.custom.abstraction.BaseFragment;
+import liufantech.com.yingxiongmao.custom.base.BaseFragment;
 import liufantech.com.yingxiongmao.main.MainActivity;
 
 /**

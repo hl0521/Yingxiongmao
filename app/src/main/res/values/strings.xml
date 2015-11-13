@@ -16,6 +16,12 @@
     <string name="login_problem">登陆遇到问题？</string>
     <string name="login_more">更多</string>
 
+    <string name="cardview_hint">图片显示错误</string>
+    <string name="cardview_share">分享</string>
+    <string name="cardview_comment">评论</string>
+    <string name="cardview_like">收藏</string>
+    <string name="cardview_date">2015年11月12日 14:30:27</string>
+
     <drawable name="click_normal">#3F51B5</drawable>
     <drawable name="click_pressed">#0000FF</drawable>
 </resources>

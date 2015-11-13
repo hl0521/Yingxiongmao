@@ -1,8 +1,10 @@
-package liufantech.com.yingxiongmao.main;
+package liufantech.com.yingxiongmao.content;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import liufantech.com.yingxiongmao.R;
-import liufantech.com.yingxiongmao.custom.abstraction.BaseFragment;
+import liufantech.com.yingxiongmao.custom.base.BaseFragment;
+import liufantech.com.yingxiongmao.main.MainConstant;
 
 
 public class ContentFragment extends BaseFragment {
@@ -210,4 +213,5 @@ public class ContentFragment extends BaseFragment {
     public interface OnFloatingActionButtonClicked {
         void onFloatingActionButtonClicked(RecyclerView recyclerView);
     }
+
 }

@@ -1,9 +1,6 @@
-package liufantech.com.yingxiongmao.main;
+package liufantech.com.yingxiongmao.content;
 
-import android.support.annotation.UiThread;
 import android.support.design.widget.FloatingActionButton;
-
-import java.util.logging.Handler;
 
 /**
  * Created by HL0521 on 2015/10/13.

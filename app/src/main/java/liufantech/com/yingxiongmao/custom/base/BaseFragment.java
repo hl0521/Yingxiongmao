@@ -1,4 +1,4 @@
-package liufantech.com.yingxiongmao.custom.abstraction;
+package liufantech.com.yingxiongmao.custom.base;
 
 import android.support.v4.app.Fragment;
 
