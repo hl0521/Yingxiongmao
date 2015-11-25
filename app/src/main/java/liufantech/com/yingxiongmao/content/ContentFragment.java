@@ -1,10 +1,8 @@
 package liufantech.com.yingxiongmao.content;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import liufantech.com.yingxiongmao.R;
+import liufantech.com.yingxiongmao.content.adapter.MainRecyclerViewAdapter;
+import liufantech.com.yingxiongmao.content.cache.AppCache;
 import liufantech.com.yingxiongmao.custom.base.BaseFragment;
 import liufantech.com.yingxiongmao.main.MainConstant;
 
@@ -23,6 +26,7 @@ public class ContentFragment extends BaseFragment {
 
     // TODO: Rename and change types of parameters
     private String mCategory;
+    private List<String> mPicUrlList;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mRecyclerViewAdapter;
@@ -34,6 +38,8 @@ public class ContentFragment extends BaseFragment {
     private Context mContext;
 
     private ContentFragment.OnFloatingActionButtonClicked mOnFloatingActionButtonListener;
+
+    private AppCache mAppCache;
 
 
     /**
@@ -84,6 +90,8 @@ public class ContentFragment extends BaseFragment {
 
         mHandler = new android.os.Handler();
 
+        initPicUrlList();
+
         switch (mCategory) {
             case MainConstant.CATEGORY_HOMEPAGE:
                 view = inflater.inflate(R.layout.fragment_homepage, container, false);
@@ -119,6 +127,21 @@ public class ContentFragment extends BaseFragment {
         return view;
     }
 
+    public void initPicUrlList() {
+        mPicUrlList = new ArrayList<>();
+
+        mPicUrlList.add(MainConstant.PIC_URL0);
+        mPicUrlList.add(MainConstant.PIC_URL1);
+        mPicUrlList.add(MainConstant.PIC_URL2);
+        mPicUrlList.add(MainConstant.PIC_URL3);
+        mPicUrlList.add(MainConstant.PIC_URL4);
+        mPicUrlList.add(MainConstant.PIC_URL5);
+        mPicUrlList.add(MainConstant.PIC_URL6);
+        mPicUrlList.add(MainConstant.PIC_URL7);
+        mPicUrlList.add(MainConstant.PIC_URL8);
+        mPicUrlList.add(MainConstant.PIC_URL9);
+    }
+
     public void initRecyclerView(View view) {
         if (view != null) {
 
@@ -128,7 +151,8 @@ public class ContentFragment extends BaseFragment {
             mRecyclerViewLayoutManager = new LinearLayoutManager(view.getContext());
             mRecyclerView.setLayoutManager(mRecyclerViewLayoutManager);
 
-            mRecyclerViewAdapter = new MainRecyclerViewAdapter(mCategory);
+            mAppCache = AppCache.get(getContext());
+            mRecyclerViewAdapter = new MainRecyclerViewAdapter(mCategory, mPicUrlList,mAppCache);
             mRecyclerView.setAdapter(mRecyclerViewAdapter);
 
             mFloatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab);
