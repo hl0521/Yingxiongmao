@@ -5,10 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import com.squareup.okhttp.Call;
 import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.ByteArrayInputStream;
@@ -17,11 +14,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 
+import liufantech.com.yingxiongmao.R;
+import liufantech.com.yingxiongmao.content.cache.PicRamCache;
+import liufantech.com.yingxiongmao.content.cache.SDcardCache;
+import liufantech.com.yingxiongmao.custom.base.NetworkUtil;
+import liufantech.com.yingxiongmao.custom.manager.OkHttpClientManager;
+import liufantech.com.yingxiongmao.main.MainConstant;
+
 
 /**
  * Created by HL0521 on 2015/11/15.
- * 暂时抛充，没用
  */
+
 public class DownloadImageTask extends AsyncTask<String, Integer, Bitmap> {
 
     private static final String TAG = "DownloadImageTask";
@@ -43,44 +47,57 @@ public class DownloadImageTask extends AsyncTask<String, Integer, Bitmap> {
     protected Bitmap doInBackground(String... params) {
         // TODO Auto-generated method stub
         mImageUrl = params[0];
-        InputStream inputStream = null;
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Bitmap bitmap = null;
+        Bitmap bitmap;
 
-        System.out.println("=============================000000000=======================");
+        bitmap = SDcardCache.get(MainConstant.PIC_CACHE).getAsBitmap(mImageUrl);
 
-        try {
-            OkHttpClient okHttpClient = new OkHttpClient();
-            final Request request = new Request.Builder().url(mImageUrl).build();
-            Call call = okHttpClient.newCall(request);
-            Response response = call.execute();
-            inputStream = response.body().byteStream();
+        if (bitmap != null) {
+            PicRamCache.getInstance().getmLruCache().put(mImageUrl, bitmap);
+            return bitmap;
+        } else {
+            InputStream inputStream = null;
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            System.out.println("=============================000000000=======================");
 
-            byte[] buffer = new byte[1024];
-            int lengh;
-            while ((lengh = inputStream.read(buffer)) > -1) {
-                byteArrayOutputStream.write(buffer, 0, lengh);
+            if (!NetworkUtil.getInstance().isNetworkConnected()) {
+                System.out.println("========" + TAG + "=========没有连网=======");
+                return null;
             }
-            byteArrayOutputStream.flush();
 
-            InputStream isTemp1 = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            bitmap = BitmapFactory.decodeStream(isTemp1);
-            isTemp1.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
             try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
+                Response response = OkHttpClientManager.getSync(mImageUrl);
+                inputStream = response.body().byteStream();
 
+                byte[] buffer = new byte[1024];
+                int lengh;
+                while ((lengh = inputStream.read(buffer)) > -1) {
+                    byteArrayOutputStream.write(buffer, 0, lengh);
+                }
+                byteArrayOutputStream.flush();
+
+                InputStream isTemp = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+                bitmap = BitmapFactory.decodeStream(isTemp);
+                isTemp.close();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } finally {
+                try {
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            return bitmap;
+                if (bitmap != null) {
+                    PicRamCache.getInstance().getmLruCache().put(mImageUrl, bitmap);
+                    SDcardCache.get(MainConstant.PIC_CACHE).put(mImageUrl, bitmap);
+                }
+
+                return bitmap;
+            }
         }
     }
 
@@ -97,7 +114,11 @@ public class DownloadImageTask extends AsyncTask<String, Integer, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
-        mImageView.setImageBitmap(bitmap);
+        if (bitmap == null) {
+            mImageView.setImageResource(R.drawable.icon_pink_like);
+        } else {
+            mImageView.setImageBitmap(bitmap);
+        }
     }
 
 }

@@ -65,8 +65,8 @@ public class SettingFragment extends BaseFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DownloadImageTask downloadImageTask = new DownloadImageTask(imageView);
-                downloadImageTask.execute(MainConstant.PIC_URL1);
+//                DownloadImageTask downloadImageTask = new DownloadImageTask(imageView, null, null);
+//                downloadImageTask.execute(MainConstant.PIC_URL1);
             }
         });
 

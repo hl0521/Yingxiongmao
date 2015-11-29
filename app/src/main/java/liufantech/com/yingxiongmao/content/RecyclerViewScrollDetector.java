@@ -22,6 +22,7 @@ public abstract class RecyclerViewScrollDetector extends RecyclerView.OnScrollLi
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
 
+        // use for FloatingActionButton
         boolean isSignificantDelta = Math.abs(dy) > mScrollThreshold;
 
         if (isSignificantDelta) {

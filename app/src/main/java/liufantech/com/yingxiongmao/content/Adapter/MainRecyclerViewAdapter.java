@@ -8,12 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.List;
 
 import liufantech.com.yingxiongmao.R;
-import liufantech.com.yingxiongmao.content.cache.AppCache;
-import liufantech.com.yingxiongmao.custom.manager.OkHttpClientManager;
+import liufantech.com.yingxiongmao.content.LoadResourceManager;
 
 /**
  * Created by HL0521 on 2015/10/12.
@@ -24,20 +22,18 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
 
     private int mPosition;
 
-    private AppCache mAppCache;
+    private LoadResourceManager mLoadResourceManager;
 
     /**
      * this parameter store the URL of picture shown in a cardview
      */
     private List<String> mPicUrlList;
 
-    private OkHttpClientManager mOkHttpClientManager;
-
-    public MainRecyclerViewAdapter(String category, List<String> picUrlList, AppCache appCache) {
+    public MainRecyclerViewAdapter(String category, List<String> picUrlList) {
         this.mCategory = category;
         mPicUrlList = picUrlList;
-        mOkHttpClientManager = OkHttpClientManager.getInstance();
-        mAppCache = appCache;
+
+        mLoadResourceManager = LoadResourceManager.getInstance();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -70,19 +66,13 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter {
         viewHolder.mLikeFunction.setText("" + mPosition);
         viewHolder.mCommentFunction.setText("" + mPosition);
 
-        Bitmap bitmap = mAppCache.getAsBitmap(mPicUrlList.get(mPosition));
-        if (bitmap == null) {
-            try {
-                OkHttpClientManager.downloadImageAsyn(viewHolder.mImageView, mPicUrlList.get(mPosition),
-                        R.drawable.icon_pink_like, mAppCache);
+        Bitmap bitmap = mLoadResourceManager.loadBitmap(mPicUrlList.get(mPosition), viewHolder.mImageView);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (bitmap == null) {
+            viewHolder.mImageView.setImageResource(R.drawable.icon_pink_like);
         } else {
             viewHolder.mImageView.setImageBitmap(bitmap);
         }
-
     }
 
     @Override

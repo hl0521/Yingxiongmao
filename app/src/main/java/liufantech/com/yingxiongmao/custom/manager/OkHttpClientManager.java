@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import liufantech.com.yingxiongmao.content.cache.AppCache;
 
 /**
  * Created by HL0521 on 2015/11/17.
@@ -254,7 +253,7 @@ public class OkHttpClientManager {
      * @param url
      * @throws IOException
      */
-    private void _downloadImageAsyn(final ImageView view, final String url, final int errorResId, final AppCache appCache) {
+    private void _downloadImageAsyn(final ImageView view, final String url, final int errorResId) {
         final Request request = new Request.Builder().url(url).build();
         Call call = mOkHttpClient.newCall(request);
         call.enqueue(new Callback() {
@@ -285,8 +284,6 @@ public class OkHttpClientManager {
 //                    ops.inSampleSize = inSampleSize;
 //                    final Bitmap bm = BitmapFactory.decodeStream(is, null, ops);
                     final Bitmap bm = BitmapFactory.decodeStream(is);
-
-                    appCache.put(url,bm);
 
                     mDelivery.post(new Runnable() {
                         @Override
@@ -369,12 +366,12 @@ public class OkHttpClientManager {
         getInstance()._postFileAsyn(url, callback, file, fileKey, params);
     }
 
-    public static void downloadImageAsyn(final ImageView view, String url, int errorResId, AppCache appCache) throws IOException {
-        getInstance()._downloadImageAsyn(view, url, errorResId, appCache);
+    public static void downloadImageAsyn(final ImageView view, String url, int errorResId) throws IOException {
+        getInstance()._downloadImageAsyn(view, url, errorResId);
     }
 
-    public static void downloadImageAsyn(final ImageView view, String url, AppCache appCache) {
-        getInstance()._downloadImageAsyn(view, url, -1, appCache);
+    public static void downloadImageAsyn(final ImageView view, String url) {
+        getInstance()._downloadImageAsyn(view, url, -1);
     }
 
     public static void downloadFileAsyn(String url, String destDir, ResultCallback callback) {

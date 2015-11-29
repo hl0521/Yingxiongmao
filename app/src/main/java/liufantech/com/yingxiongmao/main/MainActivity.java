@@ -24,16 +24,19 @@ import java.io.Writer;
 
 import liufantech.com.yingxiongmao.R;
 import liufantech.com.yingxiongmao.content.ContentFragment;
-import liufantech.com.yingxiongmao.content.cache.AppCache;
+import liufantech.com.yingxiongmao.content.cache.SDcardCache;
 import liufantech.com.yingxiongmao.custom.base.BaseFragment;
+import liufantech.com.yingxiongmao.custom.base.NetworkUtil;
 
 public class MainActivity extends AppCompatActivity implements ContentFragment.OnFloatingActionButtonClicked {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private NetworkUtil mNetworkUtil;
+
     private RootFragment fragmentRoot;
     private Handler mHandler;
-    private AppCache mAppCache;
+    private SDcardCache mSDcardCache;
 
     private BaseFragment mCurrentFragment;
 
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ContentFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAppCache = AppCache.get(this);
+        mSDcardCache = SDcardCache.get(this);
 
         fragmentRoot = RootFragment.newInstance();
 
@@ -54,6 +57,11 @@ public class MainActivity extends AppCompatActivity implements ContentFragment.O
 
         mHandler = new Handler();
 
+        mNetworkUtil = NetworkUtil.getInstance(getApplicationContext());
+
+        if (!NetworkUtil.getInstance().isNetworkConnected()) {
+            System.out.println("MainActivity=====================网络没有连接======================");
+        }
 
         // use for test
 //        makeDirectoryForApp();

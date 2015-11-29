@@ -15,7 +15,6 @@ import java.util.List;
 
 import liufantech.com.yingxiongmao.R;
 import liufantech.com.yingxiongmao.content.adapter.MainRecyclerViewAdapter;
-import liufantech.com.yingxiongmao.content.cache.AppCache;
 import liufantech.com.yingxiongmao.custom.base.BaseFragment;
 import liufantech.com.yingxiongmao.main.MainConstant;
 
@@ -38,8 +37,6 @@ public class ContentFragment extends BaseFragment {
     private Context mContext;
 
     private ContentFragment.OnFloatingActionButtonClicked mOnFloatingActionButtonListener;
-
-    private AppCache mAppCache;
 
 
     /**
@@ -128,18 +125,19 @@ public class ContentFragment extends BaseFragment {
     }
 
     public void initPicUrlList() {
-        mPicUrlList = new ArrayList<>();
-
-        mPicUrlList.add(MainConstant.PIC_URL0);
-        mPicUrlList.add(MainConstant.PIC_URL1);
-        mPicUrlList.add(MainConstant.PIC_URL2);
-        mPicUrlList.add(MainConstant.PIC_URL3);
-        mPicUrlList.add(MainConstant.PIC_URL4);
-        mPicUrlList.add(MainConstant.PIC_URL5);
-        mPicUrlList.add(MainConstant.PIC_URL6);
-        mPicUrlList.add(MainConstant.PIC_URL7);
-        mPicUrlList.add(MainConstant.PIC_URL8);
-        mPicUrlList.add(MainConstant.PIC_URL9);
+        if (mPicUrlList == null) {
+            mPicUrlList = new ArrayList<>();
+            mPicUrlList.add(MainConstant.PIC_URL0);
+            mPicUrlList.add(MainConstant.PIC_URL1);
+            mPicUrlList.add(MainConstant.PIC_URL2);
+            mPicUrlList.add(MainConstant.PIC_URL3);
+            mPicUrlList.add(MainConstant.PIC_URL4);
+            mPicUrlList.add(MainConstant.PIC_URL5);
+            mPicUrlList.add(MainConstant.PIC_URL6);
+            mPicUrlList.add(MainConstant.PIC_URL7);
+            mPicUrlList.add(MainConstant.PIC_URL8);
+            mPicUrlList.add(MainConstant.PIC_URL9);
+        }
     }
 
     public void initRecyclerView(View view) {
@@ -151,27 +149,28 @@ public class ContentFragment extends BaseFragment {
             mRecyclerViewLayoutManager = new LinearLayoutManager(view.getContext());
             mRecyclerView.setLayoutManager(mRecyclerViewLayoutManager);
 
-            mAppCache = AppCache.get(getContext());
-            mRecyclerViewAdapter = new MainRecyclerViewAdapter(mCategory, mPicUrlList,mAppCache);
+            mRecyclerViewAdapter = new MainRecyclerViewAdapter(mCategory, mPicUrlList);
             mRecyclerView.setAdapter(mRecyclerViewAdapter);
 
             mFloatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-//            mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Toast.makeText(mContext, "FloatingActionBar", Toast.LENGTH_SHORT).show();
-////                    mRecyclerViewLayoutManager.scrollToPosition(0);
-//                    mOnFloatingActionButtonListener.onFloatingActionButtonClicked(mRecyclerView);
-//
-//                }
-//            });
 
-            mRecyclerViewScrollDetector = new MyRecyclerViewScrollDetector(mFloatingActionButton);
+            mRecyclerViewScrollDetector = new MyRecyclerViewScrollDetector(mCategory, mFloatingActionButton);
             mRecyclerViewScrollDetector.setmScrollThreshold(15);
 
             mRecyclerView.addOnScrollListener(mRecyclerViewScrollDetector);
+
+            LoadResourceManager.getInstance().addLoadStateChangedListener(mCategory, mLoadStateChangedListener);
         }
     }
+
+    private LoadResourceManager.LoadStateChangedListener mLoadStateChangedListener =
+            new LoadResourceManager.LoadStateChangedListener() {
+                @Override
+                public void onResumed() {
+                    System.out.println("================" + mCategory + "=============");
+                    mRecyclerViewAdapter.notifyDataSetChanged();
+                }
+            };
 
     @Override
     public void onPause() {

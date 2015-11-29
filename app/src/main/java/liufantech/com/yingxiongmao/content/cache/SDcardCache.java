@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,47 +40,49 @@ import java.util.concurrent.atomic.AtomicLong;
  * Created by HL0521 on 2015/11/24.
  */
 
-public class AppCache {
+public class SDcardCache {
 
     public static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
     private static final int MAX_SIZE = 1024 * 1024 * 50;   // 50 mb
     private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
-    private static Map<String, AppCache> mInstanceMap = new HashMap<String, AppCache>();
+    private static Map<String, SDcardCache> mInstanceMap = new HashMap<String, SDcardCache>();
     private AppCacheManager mAppCacheManager;
 
-    public static AppCache get(Context context) {
-        return get(context, "YingXiongMaoCache");
+    public static SDcardCache get(Context context) {
+        return get(context, "A_YingXiongMao");
     }
 
-    public static AppCache get(Context context, String cacheName) {
-        File file = new File(context.getCacheDir(), cacheName);
+    public static SDcardCache get(Context context, String cacheName) {
+//        File file = new File(context.getCacheDir(), cacheName);
+        File file = new File(Environment.getExternalStorageDirectory(),cacheName);
         return get(file, MAX_SIZE, MAX_COUNT);
     }
 
-    public static AppCache get(File cacheDir) {
+    public static SDcardCache get(File cacheDir) {
         return get(cacheDir, MAX_SIZE, MAX_COUNT);
     }
 
-    public static AppCache get(Context context, long max_zise, int max_count) {
-        File file = new File(context.getCacheDir(), "YingXiongMaoCache");
+    public static SDcardCache get(Context context, long max_zise, int max_count) {
+//        File file = new File(context.getCacheDir(), "YingXiongMaoCache");
+        File file = new File(Environment.getExternalStorageDirectory(), "A_YingXiongMao");
         return get(file, max_zise, max_count);
     }
 
-    public static AppCache get(File cacheDir, long max_zise, int max_count) {
-        AppCache appCache = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
-        if (appCache == null) {
-            appCache = new AppCache(cacheDir, max_zise, max_count);
-            mInstanceMap.put(cacheDir.getAbsolutePath() + myPid(), appCache);
+    public static SDcardCache get(File cacheDir, long max_zise, int max_count) {
+        SDcardCache SDcardCache = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
+        if (SDcardCache == null) {
+            SDcardCache = new SDcardCache(cacheDir, max_zise, max_count);
+            mInstanceMap.put(cacheDir.getAbsolutePath() + myPid(), SDcardCache);
         }
-        return appCache;
+        return SDcardCache;
     }
 
     private static String myPid() {
         return "_" + android.os.Process.myPid();
     }
 
-    private AppCache(File cacheDir, long max_size, int max_count) {
+    private SDcardCache(File cacheDir, long max_size, int max_count) {
         if (!cacheDir.exists() && !cacheDir.mkdirs()) {
             throw new RuntimeException("can't make dirs in " + cacheDir.getAbsolutePath());
         }
@@ -91,7 +94,7 @@ public class AppCache {
      * Since writing about the file is complete, and its close method is called,
      * its contents will be registered in the cache. Example of use:
      * <p/>
-     * AppCache cache = new AppCache(this) try { OutputStream stream =
+     * SDcardCache cache = new SDcardCache(this) try { OutputStream stream =
      * cache.put("myFileName") stream.write("some bytes".getBytes()); // now
      * update cache! stream.close(); } catch(FileNotFoundException e){
      * e.printStackTrace() }
