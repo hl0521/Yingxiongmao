@@ -32,28 +32,28 @@
 
         <liufantech.com.yingxiongmao.custom.widget.CircleImageView
             android:id="@+id/user_portrait"
-            android:layout_width="wrap_content"
-            android:layout_height="144dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
             android:src="@drawable/ic_launcher"
             app:border_color="#000000"
-            app:border_width="6dp" />
+            app:border_width="3dp" />
 
         <liufantech.com.yingxiongmao.custom.widget.ClearEditText
             android:id="@+id/loginAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:drawableLeft="@drawable/ico_user"
             android:layout_below="@+id/user_portrait"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
+            android:drawableLeft="@drawable/ico_user"
             android:drawablePadding="24dp"
             android:drawableRight="@drawable/ico_delete"
             android:hint="@string/login_account"
             android:paddingTop="16dp"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
         <liufantech.com.yingxiongmao.custom.widget.ClearEditText
             android:id="@+id/loginPassword"
@@ -95,13 +95,14 @@
             android:textSize="14dp" />
 
         <TextView
-            android:id="@+id/loginMore"
+            android:id="@+id/loginRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:text="@string/login_more"
+            android:text="@string/login_register"
+            android:textColor="@color/colorPrimary"
             android:textSize="18dp" />
 
     </RelativeLayout>

@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,7 +17,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.avos.avoscloud.AVUser;
 
 import java.util.ArrayList;
 
@@ -41,9 +46,9 @@ public class RootFragment extends BaseFragment {
     private ContentFragment fragmentTennis;
     private ContentFragment fragmentBeauty;
 
-    private LoginFragment mLoginFragment;
-    private SettingFragment mSettingFragment;
-    private FavouriteFragment mFavouriteFragment;
+    private static LoginFragment mLoginFragment;
+    private static SettingFragment mSettingFragment;
+    private static FavouriteFragment mFavouriteFragment;
 
     private Toolbar mToolbar;
     private Toolbar.OnMenuItemClickListener onMenuItemClickListener;
@@ -62,18 +67,26 @@ public class RootFragment extends BaseFragment {
     private FloatingActionButton mFloatingActionButton;
 
     private Context mContext;
-    private Handler mHandler;
+    private static Handler mHandler;
+
+    private static RootFragment mRootFragment;
+    private ImageView mUserPortrait;
+    private TextView mUserName;
 
     public RootFragment() {
         // required empty public constructor
     }
 
-    public static RootFragment newInstance() {
-        RootFragment fragment = new RootFragment();
-        Bundle args = new Bundle();
+    public static RootFragment getInstance() {
+        if (mRootFragment == null) {
+            mRootFragment = new RootFragment();
+            initWidget();
+            Bundle args = new Bundle();
 //        args.putString();
-        fragment.setArguments(args);
-        return fragment;
+            mRootFragment.setArguments(args);
+        }
+
+        return mRootFragment;
     }
 
     @Override
@@ -91,8 +104,6 @@ public class RootFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
-        initWidget();
 
         initToolbar(view);
 
@@ -115,7 +126,7 @@ public class RootFragment extends BaseFragment {
         System.out.println("=========================================RootFragment onActivityCreated");
     }
 
-    public void initWidget() {
+    public static void initWidget() {
         if (mLoginFragment == null) {
             mLoginFragment = LoginFragment.newInstance();
         }
@@ -257,8 +268,8 @@ public class RootFragment extends BaseFragment {
 
     public void initDrawerLayout() {
         mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.main_drawer);
-//        ImageView imageView = (ImageView) getActivity().findViewById(R.id.user_portrait);
-//        TextView textView = (TextView) getActivity().findViewById(R.id.user_name);
+        mUserPortrait = (ImageView) getActivity().findViewById(R.id.user_portrait);
+        mUserName = (TextView) getActivity().findViewById(R.id.user_name);
 //
 //        Paint paint = new Paint();
 //        paint.setAntiAlias(true);
@@ -288,22 +299,39 @@ public class RootFragment extends BaseFragment {
         mDrawerLayout.setDrawerListener(mActionBarDrawerToggle);
 
         mNavigationView = (NavigationView) getActivity().findViewById(R.id.main_navigation);
+        if (MainApplication.mAVUser != null) {
+            mNavigationView.getMenu().getItem(0).setTitle("注销");
+            mUserName.setText(MainApplication.mAVUser.getUsername());
+        }
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.signin:
-//                        Toast.makeText(mContext, "signin", Toast.LENGTH_SHORT).show();
-                        if (mLoginFragment.isVisible() == false) {
-                            getFragmentManager().beginTransaction().addToBackStack(null)
-                                    .replace(R.id.main_frame, mLoginFragment).commit();
+                        if (menuItem.getTitle().toString().contentEquals(
+                                mContext.getString(R.string.drawer_menu_signin))) {
+                            if (!mLoginFragment.isVisible()) {
+                                getFragmentManager().beginTransaction().addToBackStack(null)
+                                        .replace(R.id.main_frame, mLoginFragment).commit();
+                            }
+                        } else {
+                            AVUser.logOut();
+                            MainApplication.mAVUser = AVUser.getCurrentUser();
+                            mNavigationView.getMenu().getItem(0).setTitle("登陆");
+                            mUserName.setText(R.string.app_name);
+                            Toast.makeText(mContext, "注销成功", Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case R.id.homepage:
                         Toast.makeText(mContext, "homepage", Toast.LENGTH_SHORT).show();
-                        while (getFragmentManager().getBackStackEntryCount() > 0) {
-                            getFragmentManager().popBackStackImmediate();
+
+                        // RootFragment 是底层根本的Fragment
+                        if (getFragmentManager().getBackStackEntryCount() > 0) {
+                            getFragmentManager().popBackStackImmediate(RootFragment.class.getName()
+                                    , FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         }
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.main_frame, RootFragment.getInstance()).commit();
 
                         // 下面的代码就执行时，上面的fragment还没初始化完成，代码没有作用，因此此处加了个延时
                         mHandler.postDelayed(new Runnable() {
@@ -313,24 +341,23 @@ public class RootFragment extends BaseFragment {
                                 mViewPager.setCurrentItem(0, false);
                             }
                         }, 10);
-//                        getFragmentManager().beginTransaction()
-//                                .replace(R.id.main_frame, ((MainActivity) mContext).getFragmentRoot()).commit();
+
                         break;
                     case R.id.favourite:
 //                        Toast.makeText(mContext, "favourite", Toast.LENGTH_SHORT).show();
-                        if (mFavouriteFragment.isVisible() == false) {
+                        if (!mFavouriteFragment.isVisible()) {
                             getFragmentManager().beginTransaction().addToBackStack(null)
                                     .replace(R.id.main_frame, mFavouriteFragment).commit();
                         }
                         break;
                     case R.id.setting:
 //                        Toast.makeText(mContext, "setting", Toast.LENGTH_SHORT).show();
-                        if (mSettingFragment.isVisible() == false) {
+                        if (!mSettingFragment.isVisible()) {
                             getFragmentManager().beginTransaction().addToBackStack(null)
                                     .replace(R.id.main_frame, mSettingFragment).commit();
                         }
                         break;
-                    case R.id.back:
+                    case R.id.quit:
                         menuItem.setChecked(false);
                         mDrawerLayout.closeDrawers();
                         getActivity().finish();
@@ -384,6 +411,18 @@ public class RootFragment extends BaseFragment {
 
     public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
+    }
+
+    public NavigationView getNavigationView() {
+        return mNavigationView;
+    }
+
+    public ImageView getUserPortrait() {
+        return mUserPortrait;
+    }
+
+    public TextView getUserName() {
+        return mUserName;
     }
 
     @Override

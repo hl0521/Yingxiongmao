@@ -2,11 +2,9 @@ package liufantech.com.yingxiongmao.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,12 +13,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVUser;
 
 import liufantech.com.yingxiongmao.R;
 import liufantech.com.yingxiongmao.content.ContentFragment;
@@ -47,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements ContentFragment.O
 
         mSDcardCache = SDcardCache.get(this);
 
-        fragmentRoot = RootFragment.newInstance();
+        fragmentRoot = RootFragment.getInstance();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, fragmentRoot).commit();
@@ -63,40 +57,12 @@ public class MainActivity extends AppCompatActivity implements ContentFragment.O
             System.out.println("MainActivity=====================网络没有连接======================");
         }
 
-        // use for test
-//        makeDirectoryForApp();
+        initAVOSCloud();
     }
 
-    private void makeDirectoryForApp() {
-        File sdCard = Environment.getExternalStorageDirectory();
-        Log.i(TAG, sdCard.getAbsolutePath());
-        System.out.println("-----------------------------------------------");
-        sdCard = new File(sdCard, "/AYingXiongMao");
-        sdCard.mkdir();
-        sdCard = new File(sdCard, "YingXiongMao_Cache");
-        FileOutputStream fout = null;
-        Writer writer = null;
-        try {
-            fout = new FileOutputStream(sdCard);
-            writer = new OutputStreamWriter(fout);
-            writer.write("英雄猫的缓存");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (writer != null) {
-                    writer.close();
-                }
-                if (fout != null) {
-                    fout.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+    public void initAVOSCloud() {
+        // 跟踪统计应用的打开情况
+        AVAnalytics.trackAppOpened(getIntent());
     }
 
     @Override

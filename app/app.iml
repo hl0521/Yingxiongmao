@@ -100,8 +100,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="okhttp-ws-2.5.0" level="project" />
     <orderEntry type="library" exported="" name="fastjson" level="project" />
-    <orderEntry type="library" exported="" name="bcprov-jdk15on-1.50" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
+    <orderEntry type="library" exported="" name="bcprov-jdk15on-1.50" level="project" />
     <orderEntry type="library" exported="" name="avoscloud-search-v3.12" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.5.0" level="project" />
     <orderEntry type="library" exported="" name="fastjson-1.1.39-leancloud" level="project" />

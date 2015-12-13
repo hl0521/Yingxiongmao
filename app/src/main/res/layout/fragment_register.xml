@@ -1,13 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- TODO -->
-    <TextView
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="暂时的"/>
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp">
+
+        <liufantech.com.yingxiongmao.custom.widget.CircleImageView
+            android:id="@+id/user_portrait"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher"
+            app:border_color="#000000"
+            app:border_width="3dp" />
+
+        <liufantech.com.yingxiongmao.custom.widget.ClearEditText
+            android:id="@+id/registerPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:drawableEnd="@drawable/ico_delete"
+            android:drawableLeft="@drawable/ico_user"
+            android:drawablePadding="24dp"
+            android:drawableRight="@drawable/ico_delete"
+            android:drawableStart="@drawable/ico_user"
+            android:hint="@string/register_phone"
+            android:inputType="number"
+            android:paddingTop="16dp"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <liufantech.com.yingxiongmao.custom.widget.ClearEditText
+                android:id="@+id/registerSetCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/ico_delete"
+                android:drawableLeft="@drawable/ico_user"
+                android:drawablePadding="24dp"
+                android:drawableRight="@drawable/ico_delete"
+                android:drawableStart="@drawable/ico_user"
+                android:hint="@string/register_set_code"
+                android:inputType="number"
+                android:paddingTop="16dp"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/registerGetCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="@string/register_get_code" />
+
+        </LinearLayout>
+
+        <liufantech.com.yingxiongmao.custom.widget.ClearEditText
+            android:id="@+id/registerSetPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ico_delete"
+            android:drawableLeft="@drawable/ico_like"
+            android:drawablePadding="24dp"
+            android:drawableRight="@drawable/ico_delete"
+            android:drawableStart="@drawable/ico_like"
+            android:hint="@string/register_set_password"
+            android:inputType="textPassword"
+            android:paddingTop="16dp"
+            android:textSize="16sp" />
+
+        <liufantech.com.yingxiongmao.custom.widget.ClearEditText
+            android:id="@+id/registerConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ico_delete"
+            android:drawableLeft="@drawable/ico_like"
+            android:drawablePadding="24dp"
+            android:drawableRight="@drawable/ico_delete"
+            android:drawableStart="@drawable/ico_like"
+            android:hint="@string/register_confirm_password"
+            android:inputType="textPassword"
+            android:paddingTop="16dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/login_button_selector"
+            android:clickable="false"
+            android:text="@string/register_button"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:gravity="center_vertical"
+                android:paddingTop="10dp"
+                android:text="@string/register_login"
+                android:textColor="#999999"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/registerLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                android:text="@string/login_button"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

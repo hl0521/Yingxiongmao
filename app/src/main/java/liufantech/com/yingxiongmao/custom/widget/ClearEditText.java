@@ -20,7 +20,7 @@ import liufantech.com.yingxiongmao.main.MainActivity;
 /**
  * Created by HL0521 on 2015/10/31.
  */
-public class ClearEditText extends EditText implements OnFocusChangeListener, TextWatcher {
+public class ClearEditText extends EditText implements OnFocusChangeListener {
 
     private Drawable mClearDrawable;
 
@@ -55,8 +55,13 @@ public class ClearEditText extends EditText implements OnFocusChangeListener, Te
         // 设置焦点改变的监听
         setOnFocusChangeListener(this);
         // 设置输入框里面内容发生改变的监听
-        addTextChangedListener(this);
+        /**
+         * TextView 自带了一个 onTextChanged （TextView有一个内部类，实现了TextWatcher，因此此处只需要
+         * 覆写 TextView 中的 onTextChanged 即可）
+         */
+//        addTextChangedListener(this);
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -80,11 +85,6 @@ public class ClearEditText extends EditText implements OnFocusChangeListener, Te
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
     public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
         if (text.length() > 0) {
@@ -94,15 +94,12 @@ public class ClearEditText extends EditText implements OnFocusChangeListener, Te
             setClearIconVisible(false);
             mEmpty = true;
         }
+
         if (mOnClearEditTextChangedListener != null) {
-            mOnClearEditTextChangedListener.onClearEditTextChanged();
+            mOnClearEditTextChangedListener.onClearEditTextChanged(text, start, lengthBefore, lengthAfter);
         }
     }
 
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
@@ -135,6 +132,8 @@ public class ClearEditText extends EditText implements OnFocusChangeListener, Te
     }
 
     public interface onClearEditTextChanged {
-        void onClearEditTextChanged();
+
+        void onClearEditTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter);
+
     }
 }

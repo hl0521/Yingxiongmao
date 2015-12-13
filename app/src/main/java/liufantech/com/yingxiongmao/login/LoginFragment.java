@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
+
 import liufantech.com.yingxiongmao.R;
 import liufantech.com.yingxiongmao.custom.widget.ClearEditText;
 import liufantech.com.yingxiongmao.main.MainActivity;
+import liufantech.com.yingxiongmao.main.MainApplication;
+import liufantech.com.yingxiongmao.main.RootFragment;
 
 public class LoginFragment extends Fragment {
 
@@ -25,7 +32,7 @@ public class LoginFragment extends Fragment {
     private ClearEditText mLoginPassword;
     private Button mLoginButton;
     private TextView mLoginProblem;
-    private TextView mLoginMore;
+    private TextView mLoginRegister;
     private ClearEditText.onClearEditTextChanged mClearEditTextChangedListener;
 
     private Toolbar mToolbar;
@@ -87,19 +94,14 @@ public class LoginFragment extends Fragment {
         mLoginPassword = (ClearEditText) view.findViewById(R.id.loginPassword);
         mLoginButton = (Button) view.findViewById(R.id.loginButton);
         mLoginProblem = (TextView) view.findViewById(R.id.loginProblem);
-        mLoginMore = (TextView) view.findViewById(R.id.loginMore);
+        mLoginRegister = (TextView) view.findViewById(R.id.loginRegister);
 
         mClearEditTextChangedListener = new ClearEditText.onClearEditTextChanged() {
             @Override
-            public void onClearEditTextChanged() {
-                if ((mLoginAccount.isEmpty()) || (mLoginPassword.isEmpty())) {
-                    mLoginButton.setClickable(false);
-                    mLoginButton.setBackgroundColor(Color.parseColor("#CCCCCC"));
-                } else {
-                    mLoginButton.setClickable(true);
-                    mLoginButton.setBackgroundResource(R.drawable.login_button_selector);
-                }
+            public void onClearEditTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
+                setmLoginButtonAction();
             }
+
         };
 
         mLoginAccount.setOnClearEditTextChangedListener(mClearEditTextChangedListener);
@@ -109,27 +111,87 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "Login Problem", Toast.LENGTH_SHORT).show();
+                forgetPassword();
             }
         });
 
-        mLoginMore.setOnClickListener(new View.OnClickListener() {
+        mLoginRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Login More", Toast.LENGTH_SHORT).show();
+                openRegisterPage();
             }
         });
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Login Button", Toast.LENGTH_SHORT).show();
+                login();
             }
         });
 
         mLoginButton.setClickable(false);
         mLoginButton.setBackgroundColor(Color.parseColor("#CCCCCC"));
         mLoginProblem.setClickable(true);
-        mLoginMore.setClickable(true);
+        mLoginRegister.setClickable(true);
+    }
+
+
+    /**
+     * 设置 mLoginButton 的动作反馈
+     */
+    private void setmLoginButtonAction() {
+        if ((mLoginAccount.isEmpty()) || (mLoginPassword.isEmpty())) {
+            mLoginButton.setClickable(false);
+            mLoginButton.setBackgroundColor(Color.parseColor("#CCCCCC"));
+        } else {
+            mLoginButton.setClickable(true);
+            // 设置 手按下按键 / 离开按键 时，按键的背景颜色提示
+            mLoginButton.setBackgroundResource(R.drawable.login_button_selector);
+        }
+    }
+
+    private void login() {
+        AVUser.logInInBackground(mLoginAccount.getText().toString(), mLoginPassword.getText().toString()
+                , new LogInCallback<AVUser>() {
+            @Override
+            public void done(AVUser user, AVException e) {
+                if (user != null) { // 登陆成功
+                    RootFragment fragment = RootFragment.getInstance();
+                    fragment.getNavigationView().getMenu().getItem(0).setTitle("注销");
+                    fragment.getUserName().setText(user.getUsername());
+                    MainApplication.mAVUser = user;
+                    Toast.makeText(mContext, "登陆成功", Toast.LENGTH_SHORT).show();
+                    if (getFragmentManager().getBackStackEntryCount() > 0) {
+                        getFragmentManager().popBackStackImmediate(RootFragment.class.getName()
+                                , FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    }
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.main_frame, RootFragment.getInstance()).commit();
+                } else { // 登陆失败
+                    System.out.println(e);
+                    switch (e.getCode()) {
+                        case 211:
+                            Toast.makeText(mContext, "用户名不存在", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 210:
+                            Toast.makeText(mContext, "用户名和密码不匹配", Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(mContext, "登陆失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
+    private void forgetPassword() {
+        getFragmentManager().beginTransaction().addToBackStack(null)
+                .replace(R.id.main_frame, ForgetPasswordFragment.newinstance()).commit();
+    }
+
+    private void openRegisterPage() {
+        getFragmentManager().beginTransaction().addToBackStack(null)
+                .replace(R.id.main_frame, RegisterFragment.newInstance()).commit();
     }
 
 
