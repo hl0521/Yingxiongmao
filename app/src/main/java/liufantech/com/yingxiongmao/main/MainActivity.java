@@ -185,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements ContentFragment.O
     protected void onDestroy() {
         super.onDestroy();
         System.out.println("=========================================MainActivity onDestroy");
+        finish();
+        System.exit(0);
     }
 
     @Override

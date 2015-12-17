@@ -311,7 +311,7 @@ public class RootFragment extends BaseFragment {
                         if (menuItem.getTitle().toString().contentEquals(
                                 mContext.getString(R.string.drawer_menu_signin))) {
                             if (!mLoginFragment.isVisible()) {
-                                getFragmentManager().beginTransaction().addToBackStack(null)
+                                getFragmentManager().beginTransaction().addToBackStack("RootFragment")
                                         .replace(R.id.main_frame, mLoginFragment).commit();
                             }
                         } else {

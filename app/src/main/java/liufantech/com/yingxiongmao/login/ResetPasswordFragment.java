@@ -138,9 +138,9 @@ public class ResetPasswordFragment extends Fragment {
             public void done(AVException e) {
                 if (e == null) {
 //                    Toast.makeText(mContext, "密码重置成功", Toast.LENGTH_SHORT).show();
-
-                    getFragmentManager().beginTransaction().addToBackStack(null)
-                            .replace(R.id.main_frame, LoginFragment.newInstance()).commit();
+                    getFragmentManager().popBackStack("LoginFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                    getFragmentManager().beginTransaction().addToBackStack(null)
+//                            .replace(R.id.main_frame, LoginFragment.newInstance()).commit();
                 } else {
                     System.out.println(e.toString());
 

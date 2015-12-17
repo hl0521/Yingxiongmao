@@ -124,7 +124,7 @@ public class ForgetPasswordFragment extends Fragment {
             public void done(AVException e) {
                 if (e == null) {
                     Toast.makeText(mContext, "验证码已发送", Toast.LENGTH_SHORT).show();
-                    getFragmentManager().beginTransaction().addToBackStack(null)
+                    getFragmentManager().beginTransaction().addToBackStack("ForgetPasswordFragment")
                             .replace(R.id.main_frame, ResetPasswordFragment.newinstance()).commit();
                 } else {
                     System.out.println(e.toString());

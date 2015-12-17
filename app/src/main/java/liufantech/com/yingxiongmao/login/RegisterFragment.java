@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -316,8 +317,9 @@ public class RegisterFragment extends Fragment {
         builder.setPositiveButton("返回首页", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getFragmentManager().beginTransaction().replace(R.id.main_frame
-                        , ((MainActivity) mContext).getFragmentRoot()).commit();
+                getFragmentManager().popBackStack("LoginFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getFragmentManager().beginTransaction().replace(R.id.main_frame
+//                        , ((MainActivity) mContext).getFragmentRoot()).commit();
             }
         });
         builder.show();

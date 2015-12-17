@@ -161,12 +161,10 @@ public class LoginFragment extends Fragment {
                     fragment.getUserName().setText(user.getUsername());
                     MainApplication.mAVUser = user;
                     Toast.makeText(mContext, "登陆成功", Toast.LENGTH_SHORT).show();
-                    if (getFragmentManager().getBackStackEntryCount() > 0) {
-                        getFragmentManager().popBackStackImmediate(RootFragment.class.getName()
-                                , FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    }
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.main_frame, RootFragment.getInstance()).commit();
+
+                    getFragmentManager().popBackStack("RootFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.main_frame, RootFragment.getInstance()).commit();
                 } else { // 登陆失败
                     System.out.println(e);
                     switch (e.getCode()) {
@@ -185,12 +183,12 @@ public class LoginFragment extends Fragment {
     }
 
     private void forgetPassword() {
-        getFragmentManager().beginTransaction().addToBackStack(null)
+        getFragmentManager().beginTransaction().addToBackStack("LoginFragment")
                 .replace(R.id.main_frame, ForgetPasswordFragment.newinstance()).commit();
     }
 
     private void openRegisterPage() {
-        getFragmentManager().beginTransaction().addToBackStack(null)
+        getFragmentManager().beginTransaction().addToBackStack("LoginFragment")
                 .replace(R.id.main_frame, RegisterFragment.newInstance()).commit();
     }
 
