@@ -87,6 +87,6 @@ public class LoadResourceManager {
     }
 
     public interface LoadStateChangedListener {
-        public void onResumed();
+        void onResumed();
     }
 }

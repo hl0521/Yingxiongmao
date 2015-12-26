@@ -29,8 +29,9 @@
         <ImageView
             android:id="@+id/picCardView"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/cardview_hint"
+            android:scaleType="fitCenter"
             android:src="@drawable/ico_like" />
 
         <TableRow
@@ -45,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+                android:contentDescription="@drawable/ico_share"
                 android:scaleType="fitEnd"
                 android:src="@drawable/ico_share" />
 
@@ -63,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+                android:contentDescription="@drawable/ic_forum"
                 android:scaleType="fitEnd"
                 android:src="@drawable/ic_forum" />
 
@@ -81,6 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+                android:contentDescription="@drawable/ico_like"
                 android:scaleType="fitEnd"
                 android:src="@drawable/ico_like" />
 

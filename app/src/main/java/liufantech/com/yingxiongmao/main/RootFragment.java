@@ -1,6 +1,8 @@
 package liufantech.com.yingxiongmao.main;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -315,11 +317,27 @@ public class RootFragment extends BaseFragment {
                                         .replace(R.id.main_frame, mLoginFragment).commit();
                             }
                         } else {
-                            AVUser.logOut();
-                            MainApplication.mAVUser = AVUser.getCurrentUser();
-                            mNavigationView.getMenu().getItem(0).setTitle("登陆");
-                            mUserName.setText(R.string.app_name);
-                            Toast.makeText(mContext, "注销成功", Toast.LENGTH_SHORT).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                            builder.setIcon(R.mipmap.ic_launcher);
+                            builder.setTitle("注销");
+                            builder.setMessage("您确定注销吗？");
+                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    AVUser.logOut();
+                                    MainApplication.mAVUser = AVUser.getCurrentUser();
+                                    mNavigationView.getMenu().getItem(0).setTitle("登陆");
+                                    mUserName.setText(R.string.app_name);
+                                    Toast.makeText(mContext, "注销成功", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            builder.show();
                         }
                         break;
                     case R.id.homepage:

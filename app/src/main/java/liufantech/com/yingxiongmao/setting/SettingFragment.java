@@ -1,17 +1,23 @@
 package liufantech.com.yingxiongmao.setting;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.VideoView;
+
+import java.net.URL;
 
 import liufantech.com.yingxiongmao.R;
-import liufantech.com.yingxiongmao.content.DownloadImageTask;
 import liufantech.com.yingxiongmao.custom.base.BaseFragment;
 import liufantech.com.yingxiongmao.main.MainActivity;
 import liufantech.com.yingxiongmao.main.MainConstant;
@@ -26,7 +32,7 @@ public class SettingFragment extends BaseFragment {
     private Toolbar mToolbar;
 
     // Following widgets used for test
-    private ImageView imageView;
+    private VideoView videoView;
     private Button button;
 
     public SettingFragment() {
@@ -59,14 +65,27 @@ public class SettingFragment extends BaseFragment {
 
         initWidget(view);
 
-        imageView = (ImageView) view.findViewById(R.id.imageTemp);
-        button = (Button) view.findViewById(R.id.buttonTemp);
+        videoView = (VideoView) view.findViewById(R.id.videoView);
+        button = (Button) view.findViewById(R.id.button);
+
+        // 使用这种方式创建的 MediaController 没有 快进 和 快退 两个按钮
+        MediaController mediaController = new MediaController(mContext, false);
+
+        videoView.setMediaController(mediaController);
+//        mediaController.setMediaPlayer(videoView);
+
+//        String url = MainConstant.VIDEO_CACHE + "/asdfg.mp4";
+        String url = "sdcard/A_YingXiongMao/Video/asdfg.mp4";
+//        String url = "http://v.youku.com/v_show/id_XMTQyMzI5NTAwMA==.html?firsttime=29";
+//        System.out.println(url);
+        videoView.setVideoPath(url);
+//        videoView.setVideoURI(Uri.parse(url));
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                DownloadImageTask downloadImageTask = new DownloadImageTask(imageView, null, null);
-//                downloadImageTask.execute(MainConstant.PIC_URL1);
+                videoView.start();
+                videoView.requestFocus();
             }
         });
 

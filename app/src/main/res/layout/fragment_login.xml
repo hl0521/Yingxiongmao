@@ -52,6 +52,7 @@
             android:drawablePadding="24dp"
             android:drawableRight="@drawable/ico_delete"
             android:hint="@string/login_account"
+            android:inputType="phone"
             android:paddingTop="16dp"
             android:textSize="16sp" />
 
@@ -60,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/loginAccount"
-            android:drawableLeft="@drawable/ico_like"
+            android:drawableLeft="@drawable/ic_black_lock"
             android:drawablePadding="24dp"
             android:drawableRight="@drawable/ico_delete"
             android:hint="@string/login_password"
